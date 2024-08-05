@@ -14,6 +14,10 @@ contract DeployFactoryScript is Script {
 
     function run() public {
         console2.log("Deploying on chain ID", block.chainid);
+
+        address keyStore = 0xa3c95c6fb0151b42C29754FEF66b38dd6Eaa2950;
+        address stateVerifier = 0x3aEC28C4a6fc29daE0B2c4b8b4a5e6C107Ac8391;
+
         address implementation = SafeSingletonDeployer.broadcastDeploy({
             creationCode: type(CoinbaseSmartWallet).creationCode,
             salt: 0x3438ae5ce1ff7750c1e09c4b28e2a04525da412f91561eb5b57729977f591fbb
@@ -22,6 +26,7 @@ contract DeployFactoryScript is Script {
         });
         console2.log("implementation", implementation);
         assert(implementation == EXPECTED_IMPLEMENTATION);
+
         address factory = SafeSingletonDeployer.broadcastDeploy({
             creationCode: type(CoinbaseSmartWalletFactory).creationCode,
             args: abi.encode(EXPECTED_IMPLEMENTATION),
